@@ -1,0 +1,35 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Compile') {
+            steps {
+                echo 'Compiling Calculator.java...'
+                sh 'javac Calculator.java'
+            }
+        }
+
+        stage('Test Execution') {
+            steps {
+                echo 'Running a test calculation (10 add 5)...'
+                sh 'java Calculator 10 add 5'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Archiving the compiled .class file...'
+            archiveArtifacts artifacts: '*.class', fingerprint: true
+        }
+        failure {
+            echo 'Build or Test failed. Check the console output.'
+        }
+    }
+}
