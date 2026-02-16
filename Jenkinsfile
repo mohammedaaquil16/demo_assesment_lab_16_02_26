@@ -10,13 +10,13 @@ pipeline{
         }
         stage('Run'){
             steps(){
-                bat 'javac Calculator 10-5'
+                bat 'java Calculator 10-5'
             }
         }
     }
     post{
         success{
-            archieveArtifacts artifacts:*.class'fingerprint:true
+            archieveArtifacts artifacts:*.class,fingerprint:true
         }
         failure{
             echo 'build failes'
